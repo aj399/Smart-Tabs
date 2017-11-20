@@ -1,0 +1,100 @@
+<!doctype html>
+<!--
+ This page is shown when the extension button is clicked, because the
+ "browser_action" field in manifest.json contains the "default_popup" key with
+ value "popup.html".
+ -->
+<html>
+  <head>
+    <title>Getting Started Extension's Popup</title>
+    <style>
+      body {
+        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+        font-size: 100%;
+        background-color: #f5fff5 !important;
+      }
+      #status {
+        /* avoid an excessively wide status text */
+        white-space: pre;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 400px;
+      }
+        #tabSorter {
+            height:auto;overflow:scroll;max-height:200px;
+        }
+        #tabList li
+        {
+            display: inline;
+            list-style-type: none;
+            padding-left: 0;
+            /*/*height: 45px;
+            width: 45px;
+            background-repeat: no-repeat;*/
+        }
+        #tabList {
+            padding-left:0;
+            display:flex;
+        }
+        .windowData {
+            padding-left:0;
+        }
+
+        .windowList {
+            list-style: none;
+            position: relative;
+            padding: 5px 2px;
+            border: 3px solid #d9e2de;
+            border-top-left-radius: 50px;
+            border-radius: 15px;
+            margin: 8px 4px;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border-radius: 16px;
+            background-color: #fbfbfb;
+        }
+        .tabData {
+            margin:2px;
+        }
+
+        
+
+    </style>
+
+    <!--
+      - JavaScript and HTML must be in separate files: see our Content Security
+      - Policy documentation[1] for details and explanation.
+      -
+      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+     -->
+    
+	
+	<link href="bootstrap.css"  rel="stylesheet" type="text/css" />
+	
+    <script src="jquery.js"></script>
+	<script src="angular.js"></script>
+	<script src="bootstrap.js"></script>
+    <script src="popup.js"></script>
+    <script src="drag.js"></script>
+    <script src="eventPage.js"></script>
+	
+  </head>
+  <body  data-ng-app="app" data-ng-controller="ctrl">
+  
+
+    <div id="status"></div>
+      <div id="tabSorter">
+          <ul class="windowData" data-ng-show="windows.length" data-drop="true" >
+              <li class = "windowList" data-ng-repeat="window in windows" data-jqyoui-droppable="{onDrop: 'dropCallback()'}" data-ng-model="windows" data-ng-mouseenter="enter(window)">
+              <ul id ="tabList" data-ng-show="window.tabs && window.tabs.length">
+              <li class = "tabData" data-ng-repeat="tab in window.tabs" data-drag="true"data-jqyoui-options="{revert: 'invalid'}"  data-jqyoui-draggable="{animate:true, onDrag: 'dragCallback(tab, window)'}"  >
+                  <img data-ng-click="goTo(tab, window)" data-ng-mousedown="press(tab, window)" data-ng-mouseup="release()" data-jqyoui-draggable="{animate:true, onDrag: 'dragCallback(tab, window)'}" height="40" data-ng-src={{tab.favIconUrl}} alt="" title="{{tab.title}}" /> </li>
+             </ul>
+            </li>
+          </ul>
+      </div>
+      
+    <img id="image-result" hidden>
+  </body>
+</html>
+
